@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat App</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<h1>Welcome to our chat app.</h1>
+
+<form action="/" method="post">
+  <p>Username: {% if username %}
+      <b>{{ username }}</b>#
+      <input type="hidden" value="{{ username }}" name="username">
+      {% else %}
+      <input type="text" placeholder="Please enter a username: " name="username">
+      {% endif %}
+  </p>
+  <p><textarea placeholder="Please enter a message: " name="message"></textarea><p/>
+  <input type="submit" value="Submit">
+</form>
+<br>
+<a href="/?username={{ username }}">Refresh</a>
+<hr>
+{% for msg in messages %}
+<p>
+    <b>id: {{ msg.id }}</b><br>
+    <b>user: {{ msg.username }}</b><br>
+    <b>message: {{ msg.message }}</b>
+    {% if msg.username == username %}
+    <a href="delete?username={{ username }}&id={{msg.id}}">Delete</a>
+    {% endif %}
+</p>
+{% endfor %}
+
+</body>
+</html>
