@@ -1,38 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Chat App</title>
-    <link rel="stylesheet" href="/static/css/style.css">
-</head>
-<body>
+{% extends "base.html" %}
 
-<h1>Welcome to our chat app.</h1>
+{% block style %}
+<link href="/static/css/login.css" rel="stylesheet">
+{% endblock style %}
 
-<form action="/" method="post">
-  <p>Username: {% if username %}
-      <b>{{ username }}</b>#
-      <input type="hidden" value="{{ username }}" name="username">
-      {% else %}
-      <input type="text" placeholder="Please enter a username: " name="username">
-      {% endif %}
-  </p>
-  <p><textarea placeholder="Please enter a message: " name="message"></textarea><p/>
-  <input type="submit" value="Submit">
-</form>
-<br>
-<a href="/?username={{ username }}">Refresh</a>
-<hr>
-{% for msg in messages %}
-<p>
-    <b>id: {{ msg.id }}</b><br>
-    <b>user: {{ msg.username }}</b><br>
-    <b>message: {{ msg.message }}</b>
-    {% if msg.username == username %}
-    <a href="delete?username={{ username }}&id={{msg.id}}">Delete</a>
-    {% endif %}
-</p>
-{% endfor %}
+{% block body %}
+  <body class="text-center">
+    <form action="/login" method="post" class="form-signin">
+      <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+      <label for="username" class="sr-only">Email address</label>
 
-</body>
-</html>
+      <input type="text" id="username" name="username" class="form-control" {% if username %}value="{{username}}"{% endif %}
+             placeholder="username" required autofocus>
+
+      <!-- label for="inputPassword" class="sr-only">Password</label>
+      <input type="password" id="inputPassword" class="form-control" placeholder="Password" required -->
+
+      <div class="checkbox mb-3">
+        <label>
+
+          <input type="checkbox" name="remember" value="True"> Remember me
+
+        </label>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+    </form>
+  </body>
+{% endblock body %}
