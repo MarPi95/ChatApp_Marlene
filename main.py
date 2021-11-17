@@ -1,5 +1,6 @@
 import os
 import uuid
+import hashlib
 from flask import Flask, render_template, request, make_response
 from flask_sqlalchemy import SQLAlchemy
 
@@ -39,11 +40,12 @@ def login():
 
     user_model = db.session.query(User).filter(User.username == username).first()
     if not user_model:
-        user_model = User(username=username, password=password)
+        user_model = User(username=username, password=hashlib.sha256(password.encode()).hexdigest())
         db.session.add(user_model)
         db.session.commit()
 
-    if password != user_model.password:
+    hashed_password = hashlib.sha256(password.encode()).hexdigest()
+    if hashed_password != user_model.password:
         return render_template("index.html", error="Wrong username/password! :(")
     else:
         session_token = str(uuid.uuid4())
@@ -100,7 +102,6 @@ def delete():
 
     if not session_token:
         return render_template("index.html", error="User is not logged in! :(")
-
 
     message_id = request.args.get("id")
 
